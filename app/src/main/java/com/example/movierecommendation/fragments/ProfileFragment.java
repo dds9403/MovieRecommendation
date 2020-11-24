@@ -87,8 +87,8 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        username = account.getEmail().toString();
-        photoURL = account.getPhotoUrl().toString();
+        username = account==null?firebaseUser.getEmail():account.getEmail();
+//        photoURL = account==null? null:account
         tUsername.setText(username);
         if(photoURL!=null) {
             Picasso.get().load(photoURL).into(image);
