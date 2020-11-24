@@ -65,11 +65,11 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.action_profile:
                         // do something here
                         //Toast.makeText(MainActivity.this, "profile", Toast.LENGTH_SHORT).show();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("Username",username);
-                        bundle.putString("PhotoURL",photoURL);
+//                        Bundle bundle = new Bundle();
+//                        bundle.putString("Username",username);
+//                        bundle.putString("PhotoURL",photoURL);
                         fragment = new ProfileFragment();
-                        fragment.setArguments(bundle);
+//                        fragment.setArguments(bundle);
                         break;
                     default:
                         return true;

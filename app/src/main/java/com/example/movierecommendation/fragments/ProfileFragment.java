@@ -87,8 +87,8 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        username = getArguments().getString("Username");
-        photoURL = getArguments().getString("PhotoURL");
+        username = account.getEmail().toString();
+        photoURL = account.getPhotoUrl().toString();
         tUsername.setText(username);
         if(photoURL!=null) {
             Picasso.get().load(photoURL).into(image);
