@@ -52,6 +52,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:${appCompatVersion}"
     implementation "com.google.android.material:material:${designSupportVersion}"
     implementation "androidx.recyclerview:recyclerview:${recyclerViewVersion}"
+    implementation "com.squareup.picasso:picasso:2.71828"
 }
 
 apply plugin: 'com.google.gms.google-services'  // Google Services plugin

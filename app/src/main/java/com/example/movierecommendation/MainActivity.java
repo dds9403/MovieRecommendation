@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.movierecommendation.fragments.FavoriteFragment;
@@ -21,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     final FragmentManager fragmentManager = getSupportFragmentManager();
     BottomNavigationView bottomNavigationView;
     FirebaseAuth mAuth;
+    String username;
+    String photoURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +32,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
-
+        username = getIntent().getStringExtra("Username");
+        photoURL = getIntent().getStringExtra("PhotoURL");
+        Log.i("MainActivity",username+" "+photoURL);
         bottomNavigationView = findViewById(R.id.bottomNavigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -59,7 +65,11 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.action_profile:
                         // do something here
                         //Toast.makeText(MainActivity.this, "profile", Toast.LENGTH_SHORT).show();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("Username",username);
+                        bundle.putString("PhotoURL",photoURL);
                         fragment = new ProfileFragment();
+                        fragment.setArguments(bundle);
                         break;
                     default:
                         return true;

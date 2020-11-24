@@ -1,16 +1,24 @@
 package com.example.movierecommendation.fragments;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaActionSound;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.movierecommendation.LoginActivity;
@@ -25,18 +33,27 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.Executor;
 
 
 public class ProfileFragment extends Fragment {
 
     Button logout;
+    ImageView image;
+    TextView tUsername;
     FragmentTransaction fragmentTransaction;
     GoogleSignInAccount account;
     FirebaseUser firebaseUser;
     GoogleSignInOptions googleSignInOptions;
     GoogleSignInClient googleSignInClient;
+    String username;
+
+
+    String photoURL;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -57,6 +74,8 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         logout = view.findViewById(R.id.logout);
+        image = view.findViewById(R.id.profilePicture);
+        tUsername = view.findViewById(R.id.userEmail);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +86,29 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        username = getArguments().getString("Username");
+        photoURL = getArguments().getString("PhotoURL");
+        tUsername.setText(username);
+        if(photoURL!=null) {
+            Picasso.get().load(photoURL).into(image);
+        }
+        else{
+            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_profile));
+        }
+//        try {
+//            InputStream in = new java.net.URL(photoURL).openStream();
+//            Bitmap bitmap= BitmapFactory.decode
+//            image.setImageBitmap(bitmap);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+//        image.setImageURI(null);
+        //image.setImageURI(photoUri);
+//        GlideApp.with(getApplicationContext())
+//
+//        Log.i("ProfileFragment",photoUri.toString());
         return view;
     }
 
