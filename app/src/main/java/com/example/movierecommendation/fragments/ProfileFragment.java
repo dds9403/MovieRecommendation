@@ -3,6 +3,14 @@ package com.example.movierecommendation.fragments;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Shader;
 import android.media.MediaActionSound;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,11 +41,21 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.like.CircleView;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.Executor;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.Shader;
+
 
 
 public class ProfileFragment extends Fragment {
@@ -64,7 +82,7 @@ public class ProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         account = GoogleSignIn.getLastSignedInAccount(getContext());
-       // Toast.makeText(getContext(),account.getEmail(),Toast.LENGTH_SHORT).show();
+        // Toast.makeText(getContext(),account.getEmail(),Toast.LENGTH_SHORT).show();
         googleSignInClient = GoogleSignIn.getClient(getActivity(), googleSignInOptions.DEFAULT_SIGN_IN);
     }
 
@@ -88,27 +106,14 @@ public class ProfileFragment extends Fragment {
         });
 
         username = account==null?firebaseUser.getEmail():account.getEmail();
-//        photoURL = account==null? null:account
+        photoURL = account==null? null:account.getPhotoUrl().toString();
         tUsername.setText(username);
         if(photoURL!=null) {
-            Picasso.get().load(photoURL).into(image);
+            Picasso.get().load(photoURL).transform(new CircleTransform()).into(image);
         }
         else{
             image.setImageDrawable(getResources().getDrawable(R.drawable.ic_profile));
         }
-//        try {
-//            InputStream in = new java.net.URL(photoURL).openStream();
-//            Bitmap bitmap= BitmapFactory.decode
-//            image.setImageBitmap(bitmap);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-//        image.setImageURI(null);
-        //image.setImageURI(photoUri);
-//        GlideApp.with(getApplicationContext())
-//
-//        Log.i("ProfileFragment",photoUri.toString());
         return view;
     }
 
@@ -123,4 +128,70 @@ public class ProfileFragment extends Fragment {
                     }
                 });
     }
+
+
+
+    // enables hardware accelerated rounded corners
+
+
+
+
+    public class CircleTransform implements Transformation
+    {
+        @Override
+        public Bitmap transform(Bitmap source) {
+            int size = Math.min(source.getWidth(), source.getHeight());
+
+            int x = (source.getWidth() - size) / 2;
+            int y = (source.getHeight() - size) / 2;
+
+            Bitmap squaredBitmap = Bitmap.createBitmap(source, x, y, size, size);
+            if (squaredBitmap != source) {
+                source.recycle();
+            }
+
+            Bitmap bitmap = Bitmap.createBitmap(size, size, source.getConfig());
+
+            Canvas canvas = new Canvas(bitmap);
+            Paint paint = new Paint();
+            BitmapShader shader = new BitmapShader(squaredBitmap,
+                    BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP);
+            paint.setShader(shader);
+            paint.setAntiAlias(true);
+
+            float r = size / 2f;
+            canvas.drawCircle(r, r, r, paint);
+
+            squaredBitmap.recycle();
+            return bitmap;
+        }
+
+        @Override
+        public String key() {
+            return "circle";
+        }
+
+        public Bitmap getCroppedBitmap(Bitmap bitmap) {
+            Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                    bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(output);
+
+            final int color = 0xff424242;
+            final Paint paint = new Paint();
+            final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+            paint.setAntiAlias(true);
+            canvas.drawARGB(0, 0, 0, 0);
+            paint.setColor(color);
+            // canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+            canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                    bitmap.getWidth() / 2, paint);
+            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+            canvas.drawBitmap(bitmap, rect, rect, paint);
+            //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
+            //return _bmp;
+            return output;
+        }
+    }
+
 }
