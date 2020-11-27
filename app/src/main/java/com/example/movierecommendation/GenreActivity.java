@@ -16,8 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GenreActivity extends AppCompatActivity implements View.OnClickListener {
-   Button btnDone;
-   Button btnSkip;
+    Button btnDone;
+    Button btnSkip;
 
     private CardView[] cards = new CardView[6];
     private int[] cardIds = {R.id.cardAction, R.id.cardComedy, R.id.cardDrama,
@@ -29,27 +29,29 @@ public class GenreActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_genre);
 
-      btnDone = findViewById(R.id.btnDone);
-      btnSkip = findViewById(R.id.btnSkip);
-      btnDone.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-          startActivity(intent);
-          finish();
-        }
-      });
+        btnDone = findViewById(R.id.btnDone);
+        btnSkip = findViewById(R.id.btnSkip);
+        btnDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
-      btnSkip.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          finish();
-        }
-      });
+        btnSkip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(GenreActivity.this,MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
 
         for (int i = 0; i < cards.length; i++) {
-          cards[i] = findViewById(cardIds[i]);
+            cards[i] = findViewById(cardIds[i]);
             cards[i].setOnClickListener(this);
             isSelected.put(cardIds[i], false);
         }
@@ -64,14 +66,12 @@ public class GenreActivity extends AppCompatActivity implements View.OnClickList
 
         //clickedButton.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
         if (isSelected.get(view.getId())) {
-          clickedCard.getBackground().getCurrent().setTint(ContextCompat.getColor(this, R.color.blue));
+            clickedCard.getBackground().getCurrent().setTint(ContextCompat.getColor(this, R.color.blue));
             isSelected.put(view.getId(), false);
         } else {
-          clickedCard.getBackground().getCurrent().setTint(ContextCompat.getColor(this,
-                                                                                      R.color.white));
+            clickedCard.getBackground().getCurrent().setTint(ContextCompat.getColor(this,
+                    R.color.white));
             isSelected.put(view.getId(), true);
         }
-
-
     }
 }

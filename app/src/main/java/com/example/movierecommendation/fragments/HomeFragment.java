@@ -17,18 +17,30 @@ import android.widget.Toast;
 import com.example.movierecommendation.MovieAdapter;
 import com.example.movierecommendation.R;
 import com.example.movierecommendation.model.Movie;
+import com.example.movierecommendation.model.User;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class HomeFragment extends Fragment {
 
@@ -36,7 +48,9 @@ public class HomeFragment extends Fragment {
     MovieAdapter movieAdapter;
     List<Movie> movieList;
     DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    CollectionReference collectionReference;
+    GoogleSignInAccount account;
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
     public static final String TAG = "HomeFragment";
 
@@ -47,7 +61,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        collectionReference = firebaseFirestore.collection("users");
+        account = GoogleSignIn.getLastSignedInAccount(getContext());
     }
 
     @Override
@@ -64,23 +79,38 @@ public class HomeFragment extends Fragment {
 
 
         movieList = new ArrayList<>();
-
-        database.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot movieSnapshot : snapshot.getChildren()) {
-                    Movie movie = movieSnapshot.getValue(Movie.class);
-                    if (movie.Title != null && movie.Poster != null)
-                        movieList.add(movie);
-                }
-                movieAdapter = new MovieAdapter(getActivity(), movieList);
-                rvMovies.setAdapter(movieAdapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), "Something Went Wrong", Toast.LENGTH_LONG).show();
-            }
-        });
+        String email = account == null ? FirebaseAuth.getInstance().getCurrentUser().toString() : account.getEmail();
+        collectionReference
+                .whereEqualTo("email", email)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            User u = documentSnapshot.toObject(User.class);
+                            Set<String> moviesLikedByCurrentUser = new HashSet<>(u.liked);
+                            database.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    for (DataSnapshot movieSnapshot : snapshot.getChildren()) {
+                                        Movie movie = movieSnapshot.getValue(Movie.class);
+                                        if (movie.Title != null && movie.Poster != null) {
+                                            if (moviesLikedByCurrentUser.contains(movie.Title)) {
+                                                movie.isLiked = true;
+                                            }
+                                            movieList.add(movie);
+                                        }
+                                    }
+                                    Collections.shuffle(movieList);
+                                    movieAdapter = new MovieAdapter(getContext(), movieList);
+                                    rvMovies.setAdapter(movieAdapter);
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                }
+                            });
+                        }
+                    }
+                });
     }
 }

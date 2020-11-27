@@ -84,6 +84,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         holder.tvGenre.setText(movie.get(position).Genre.substring(0, g == -1 ? movie.get(position).Genre.length() : g));
         holder.tvReleasedDate.setText(movie.get(position).Year);
         Picasso.get().load(movie.get(position).Poster).into(holder.poster);
+        Boolean like = movie.get(position).isLiked;
+        holder.likeButton.setLiked(like);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,8 +130,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             likeButton.setOnLikeListener(new OnLikeListener() {
                 @Override
                 public void liked(LikeButton likeButton) {
+                    String email = account == null ? FirebaseAuth.getInstance().getCurrentUser().toString() : account.getEmail();
                     collectionReference
-                            .whereEqualTo("email", account.getEmail())
+                            .whereEqualTo("email", email)
                             .get()
                             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                 @Override
@@ -159,8 +162,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 }
             });
         }
-
-
     }
 
 
