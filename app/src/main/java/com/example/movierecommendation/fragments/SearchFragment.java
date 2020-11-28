@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import com.example.movierecommendation.R;
 import com.example.movierecommendation.model.Movie;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
+//import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -93,19 +93,19 @@ public class SearchFragment extends Fragment {
 
     private void firebaseMovieSearch(String title) {
         Query query = databaseReference.orderByChild("Title").startAt(title).endAt(title + "\uf8ff");
-        FirebaseRecyclerAdapter<Movie, MovieHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Movie, MovieHolder>(
-                Movie.class,
-                R.layout.item_movie,
-                MovieHolder.class,
-                query
-        ) {
-            @Override
-            protected void populateViewHolder(MovieHolder movieHolder, Movie movie, int i) {
-                if (movie.Title != null && movie.Poster != null)
-                    movieHolder.setDetails(movie.Title, movie.Genre, movie.Year, movie.Runtime, movie.Poster);
-            }
-        };
-        recyclerView.setAdapter(firebaseRecyclerAdapter);
+//        FirebaseRecyclerAdapter<Movie, MovieHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Movie, MovieHolder>(
+//                Movie.class,
+//                R.layout.item_movie,
+//                MovieHolder.class,
+//                query
+//        ) {
+//            @Override
+//            protected void populateViewHolder(MovieHolder movieHolder, Movie movie, int i) {
+//                if (movie.Title != null && movie.Poster != null)
+//                    movieHolder.setDetails(movie.Title, movie.Genre, movie.Year, movie.Runtime, movie.Poster);
+//            }
+//        };
+//        recyclerView.setAdapter(firebaseRecyclerAdapter);
     }
 
     public static class MovieHolder extends RecyclerView.ViewHolder {
