@@ -2,25 +2,18 @@ package com.example.movierecommendation.fragments;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.Shader;
-import android.media.MediaActionSound;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,21 +34,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.like.CircleView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.concurrent.Executor;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.graphics.Shader;
-
 
 
 public class ProfileFragment extends Fragment {
@@ -63,15 +45,13 @@ public class ProfileFragment extends Fragment {
     Button logout;
     ImageView image;
     TextView tUsername;
+    String username;
+    String photoURL;
     FragmentTransaction fragmentTransaction;
     GoogleSignInAccount account;
     FirebaseUser firebaseUser;
     GoogleSignInOptions googleSignInOptions;
     GoogleSignInClient googleSignInClient;
-    String username;
-
-
-    String photoURL;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -82,7 +62,7 @@ public class ProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         account = GoogleSignIn.getLastSignedInAccount(getContext());
-        // Toast.makeText(getContext(),account.getEmail(),Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getContext(),account.getEmail(),Toast.LENGTH_SHORT).show();
         googleSignInClient = GoogleSignIn.getClient(getActivity(), googleSignInOptions.DEFAULT_SIGN_IN);
     }
 
@@ -105,11 +85,11 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        username = account==null?firebaseUser.getEmail():account.getEmail();
-        photoURL = account==null? null:account.getPhotoUrl().toString();
+        username = account == null ? firebaseUser.getEmail() : account.getEmail();
+        photoURL = account == null ? null : account.getPhotoUrl().toString();
         tUsername.setText(username);
-        if(photoURL!=null) {
-            Picasso.get().load(photoURL).transform(new CircleTransform()).into(image);
+        if(photoURL!= null) {
+            Picasso.get().load(photoURL).into(image);
         }
         else{
             image.setImageDrawable(getResources().getDrawable(R.drawable.ic_profile));
@@ -128,11 +108,6 @@ public class ProfileFragment extends Fragment {
                     }
                 });
     }
-
-
-
-    // enables hardware accelerated rounded corners
-
 
 
 
@@ -166,6 +141,7 @@ public class ProfileFragment extends Fragment {
             return bitmap;
         }
 
+
         @Override
         public String key() {
             return "circle";
@@ -193,5 +169,4 @@ public class ProfileFragment extends Fragment {
             return output;
         }
     }
-
 }

@@ -5,7 +5,6 @@ package com.example.movierecommendation.model;
 import java.util.List;
 
 public class Movie {
-
     public String Metascore;
     public String BoxOffice;
     public String Website;
@@ -29,6 +28,12 @@ public class Movie {
     public String Genre;
     public String Writer;
     public String Error;
+    public String Name;
+    public String imdbVotes;
+    public String imdbID;
+    public String imdbRating;
+    public String totalSeasons;
+    public Boolean isLiked = false;
 
     @Override
     public String toString() {
@@ -56,17 +61,14 @@ public class Movie {
                 ", Genre='" + Genre + '\'' +
                 ", Writer='" + Writer + '\'' +
                 ", Error='" + Error + '\'' +
+                ", Name='" + Name + '\'' +
                 ", imdbVotes='" + imdbVotes + '\'' +
                 ", imdbID='" + imdbID + '\'' +
                 ", imdbRating='" + imdbRating + '\'' +
                 ", totalSeasons='" + totalSeasons + '\'' +
+                ", isLiked=" + isLiked +
                 '}';
     }
-
-    public String imdbVotes;
-    public String imdbID;
-    public String imdbRating;
-    public String totalSeasons;
 
     public Movie() {
     }

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -32,13 +33,8 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        actionBar = getSupportActionBar();
-
-        actionBar.hide();
-
         userName = findViewById(R.id.username);
         password = findViewById(R.id.password);
-
         mAuth = FirebaseAuth.getInstance();
     }
 
@@ -68,6 +64,7 @@ public class SignUpActivity extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(user, pass).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(getApplicationContext(), "User Registered Successfully", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this,GenreActivity.class);
                 finish();
             } else {
                 if (task.getException() instanceof FirebaseAuthUserCollisionException) {
