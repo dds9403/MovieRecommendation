@@ -38,6 +38,7 @@ public class MovieDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_movie_detail, container, false);
+
         imageView = view.findViewById(R.id.imageView);
         title = view.findViewById(R.id.textView);
         duration = view.findViewById(R.id.textView2);

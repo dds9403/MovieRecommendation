@@ -6,6 +6,18 @@
         android:layout_height="match_parent"
         android:background="@color/grey_500"
         tools:context=".MainActivity">
+<!--    <androidx.appcompat.widget.Toolbar-->
+<!--        android:id="@+id/toolbar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="?attr/actionBarSize"-->
+<!--        android:background="@color/blue"-->
+<!--        android:textAlignment="center"-->
+<!--        android:theme="@style/ToolbarTheme"-->
+<!--        app:title="MovieFlix"-->
+<!--        app:titleMarginBottom="5dp"-->
+<!--        app:titleMarginTop="5dp"-->
+<!--        app:titleTextAppearance="@style/Toolbar.TitleText"-->
+<!--        app:titleTextColor="#FFFFFF" />-->
 
     <FrameLayout
             android:id="@+id/flContainer"
@@ -15,13 +27,20 @@
             android:layout_above="@id/bottomNavigation"
             />
 
+    <View
+        android:id="@+id/separator3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@id/bottomNavigation"
+        android:background="#757575" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNavigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="#616161"
-            app:menu="@menu/menu_bottom_navigation" />
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#6d6d6d"
+        app:elevation="10dp"
+        app:menu="@menu/menu_bottom_navigation" />
 
 </RelativeLayout>

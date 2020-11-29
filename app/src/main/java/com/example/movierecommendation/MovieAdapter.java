@@ -64,7 +64,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         this.movie = movie;
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
-        account = GoogleSignIn.getLastSignedInAccount(context);
+        account = GoogleSignIn.getLastSignedInAccount((AppCompatActivity) context);
         firebaseFirestore = FirebaseFirestore.getInstance();
         collectionReference = firebaseFirestore.collection("users");
     }

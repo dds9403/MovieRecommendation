@@ -30,7 +30,7 @@ public class GenreActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_genre);
 
         btnDone = findViewById(R.id.btnDone);
-        btnSkip = findViewById(R.id.btnSkip);
+        //btnSkip = findViewById(R.id.btnSkip);
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -40,14 +40,14 @@ public class GenreActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        btnSkip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(GenreActivity.this,MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+//        btnSkip.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(GenreActivity.this,MainActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
 
 
         for (int i = 0; i < cards.length; i++) {

@@ -61,10 +61,10 @@ public class LoginActivity extends AppCompatActivity {
 
         if (firebaseUser != null || account != null) {
             Intent intent1 = new Intent(this, MainActivity.class);
-            startActivity(intent1);
             String user = firebaseUser == null ? account.getEmail() : firebaseUser.getEmail();
             Toast.makeText(this, "Signed in as " + user, Toast.LENGTH_SHORT).show();
-            finish();
+            startActivity(intent1);
+            //finish();
         }
 
         userName = (EditText) findViewById(R.id.username);

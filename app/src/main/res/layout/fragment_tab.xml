@@ -5,12 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.TabFragment">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#6d6d6d"
+        android:textAlignment="center"
+        android:theme="@style/ToolbarTheme"
+        app:title="MovieFlix"
+        app:titleMarginBottom="5dp"
+        app:titleMarginTop="5dp"
+        app:titleTextAppearance="@style/Toolbar.TitleText"
+        app:titleTextColor="#FFFFFF" />
+<!--    <View-->
+<!--        android:id="@+id/separator3"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="1dp"-->
+<!--        android:layout_above="@id/tab_layout"-->
+<!--        android:background="#757575" />-->
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
+        android:layout_below="@id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@color/grey_500"
         android:elevation="6dp"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
