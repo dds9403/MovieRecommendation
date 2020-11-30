@@ -4,38 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_500"
     tools:context=".fragments.SearchFragment">
 
     <EditText
         android:id="@+id/ed1"
-        android:layout_width="280dp"
-        android:layout_height="50dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_margin="20dp"
         android:background="@drawable/et_rounded"
         android:ems="10"
         android:hint="Search"
-        android:inputType="textPersonName"
-        android:textColor="@color/white"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:textColor="@android:color/white"
         android:paddingStart="20dp"
         android:textSize="16sp" />
 
-    <Button
-        android:id="@+id/search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_toRightOf="@+id/ed1"
-        android:backgroundTint="@color/blue"
-        android:text="Done"
-            android:layout_marginStart="10dp"
-        android:textColor="@color/white" />
+<!--    <Button-->
+<!--        android:id="@+id/search"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:layout_toRightOf="@+id/ed1"-->
+<!--        android:backgroundTint="@color/blue"-->
+<!--        android:text="Done"-->
+<!--        android:layout_marginStart="10dp"-->
+<!--        android:textColor="@color/white"-->
+<!--        />-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSearch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/search"
+        android:layout_below="@+id/ed1"
         android:layout_marginTop="20dp" />
 </RelativeLayout>

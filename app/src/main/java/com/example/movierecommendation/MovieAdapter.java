@@ -82,8 +82,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         holder.tvDuration.setText(movie.get(position).Runtime);
         int g = movie.get(position).Genre.indexOf(",");
         holder.tvGenre.setText(movie.get(position).Genre.substring(0, g == -1 ? movie.get(position).Genre.length() : g));
-        holder.tvReleasedDate.setText(movie.get(position).Year);
-        Picasso.get().load(movie.get(position).Poster).into(holder.poster);
+        holder.tvReleasedDate.setText(movie.get(position).Year.substring(0,4));
+        Picasso.get().load(movie.get(position).Poster).placeholder(R.drawable.ic_placeholder_new).into(holder.poster);
         Boolean like = movie.get(position).isLiked;
         holder.likeButton.setLiked(like);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +93,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 Fragment fragment = new MovieDetailFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("result", movie.get(position).Poster + "#" + movie.get(position).Title + "#" + movie.get(position).Runtime + "#"
-                        + movie.get(position).Year + "#" + movie.get(position).Genre + "#" + movie.get(position).Plot);
+                        + movie.get(position).Year.substring(0,4) + "#" + movie.get(position).Genre + "#" + movie.get(position).Plot);
                 fragment.setArguments(bundle);
                 manager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack(null).commit();
             }
@@ -130,7 +130,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             likeButton.setOnLikeListener(new OnLikeListener() {
                 @Override
                 public void liked(LikeButton likeButton) {
-                    String email = account == null ? FirebaseAuth.getInstance().getCurrentUser().toString() : account.getEmail();
+                    Toast.makeText(itemView.getContext(), "Liked", Toast.LENGTH_SHORT).show();
+                    String email = account == null ? FirebaseAuth.getInstance().getCurrentUser().getEmail() : account.getEmail();
                     collectionReference
                             .whereEqualTo("email", email)
                             .get()
@@ -146,8 +147,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 }
                 @Override
                 public void unLiked(LikeButton likeButton) {
+                    String email = account == null ? FirebaseAuth.getInstance().getCurrentUser().getEmail() : account.getEmail();
                     collectionReference
-                            .whereEqualTo("email", account.getEmail())
+                            .whereEqualTo("email", email)
                             .get()
                             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                 @Override

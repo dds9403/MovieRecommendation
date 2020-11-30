@@ -79,7 +79,7 @@ public class HomeFragment extends Fragment {
 
 
         movieList = new ArrayList<>();
-        String email = account == null ? FirebaseAuth.getInstance().getCurrentUser().toString() : account.getEmail();
+        String email = account == null ? FirebaseAuth.getInstance().getCurrentUser().getEmail() : account.getEmail();
         collectionReference
                 .whereEqualTo("email", email)
                 .get()
@@ -94,10 +94,7 @@ public class HomeFragment extends Fragment {
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     for (DataSnapshot movieSnapshot : snapshot.getChildren()) {
                                         Movie movie = movieSnapshot.getValue(Movie.class);
-                                        if (movie.Title != null && movie.Poster != null) {
-                                            if (moviesLikedByCurrentUser.contains(movie.Title)) {
-                                                movie.isLiked = true;
-                                            }
+                                        if (movie.Title != null && movie.Poster != null && !moviesLikedByCurrentUser.contains(movie.Title)) {
                                             movieList.add(movie);
                                         }
                                     }
@@ -105,6 +102,7 @@ public class HomeFragment extends Fragment {
                                     movieAdapter = new MovieAdapter(getContext(), movieList);
                                     rvMovies.setAdapter(movieAdapter);
                                 }
+
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
                                 }

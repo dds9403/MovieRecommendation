@@ -26,58 +26,65 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 
-public class FavoriteFragment extends Fragment {
+class SortByYear implements Comparator<Movie> {
 
-    RecyclerView rvFavorite;
+    @Override
+    public int compare(Movie o1, Movie o2) {
+        int year1 = Integer.parseInt(o1.Year.substring(0, 4));
+        int year2 = Integer.parseInt(o2.Year.substring(0, 4));
+        return year2 - year1;
+    }
+}
+
+public class NewFragment extends Fragment {
+
+    RecyclerView rvNewTab;
     MovieAdapter movieAdapter;
     List<Movie> movieList;
     DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     CollectionReference collectionReference;
     GoogleSignInAccount account;
-    User user;
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
-
-    public FavoriteFragment() {
+    public NewFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         collectionReference = firebaseFirestore.collection("users");
         account = GoogleSignIn.getLastSignedInAccount(getContext());
-        user = new User();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorite, container, false);
+        return inflater.inflate(R.layout.fragment_new, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rvFavorite = view.findViewById(R.id.rvFavorite);
-        rvFavorite.setLayoutManager(new LinearLayoutManager(getContext()));
-        movieList = new ArrayList<>();
+        rvNewTab = view.findViewById(R.id.rvNewTab);
+        rvNewTab.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        movieList = new ArrayList<>();
         String email = account == null ? FirebaseAuth.getInstance().getCurrentUser().getEmail() : account.getEmail();
+
         collectionReference
                 .whereEqualTo("email", email)
                 .get()
@@ -92,13 +99,13 @@ public class FavoriteFragment extends Fragment {
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     for (DataSnapshot movieSnapshot : snapshot.getChildren()) {
                                         Movie movie = movieSnapshot.getValue(Movie.class);
-                                        if (moviesLikedByCurrentUser.contains(movie.Title)) {
-                                            movie.isLiked = true;
+                                        if (movie.Title != null && movie.Poster != null && !moviesLikedByCurrentUser.contains(movie.Title)) {
                                             movieList.add(movie);
                                         }
                                     }
-                                    movieAdapter = new MovieAdapter(getActivity(), movieList);
-                                    rvFavorite.setAdapter(movieAdapter);
+                                    Collections.sort(movieList, new SortByYear());
+                                    movieAdapter = new MovieAdapter(getContext(), movieList);
+                                    rvNewTab.setAdapter(movieAdapter);
                                 }
 
                                 @Override

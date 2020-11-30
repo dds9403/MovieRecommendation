@@ -8,18 +8,26 @@
     android:background="@color/grey_500"
     tools:context=".LoginActivity">
 
-<!--    <TextView-->
-<!--        android:id="@+id/tvAppName"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:textSize="28sp"-->
-<!--        android:text="MOVIEFLIX"-->
-<!--        android:textColor="@color/blue"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:textStyle="bold" />-->
+    <TextView
+        android:id="@+id/tvAppName"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:textSize="28sp"
+        android:text="MOVIEFLIX"
+        android:textColor="@color/blue"
+        android:layout_height="wrap_content"
+        android:textStyle="bold" />
 
-
+    <TextView
+        android:id="@+id/tvSignInMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:text="Sign In"
+        android:textColor="@color/white"
+        android:textSize="28dp" />
 
     <EditText
         android:id="@+id/username"
@@ -27,10 +35,10 @@
         android:layout_height="50dp"
         android:hint="Email"
         android:paddingStart="10dp"
-        android:background="@drawable/et_rounded"
         android:textColor="@color/black"
+        android:background="@drawable/et_rounded"
         android:layout_gravity="center"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="30dp"
         />
 
     <EditText
